@@ -1,13 +1,19 @@
-import React, { useState } from "react";
-import { Container } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Card, Container } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+
 import SAlert from "../../../components/Alert";
 import SBreadCrumb from "../../../components/BreadCrumb";
-import SNavbar from "../../../components/Navbar";
 import SForm from "../components/form";
 
-function CategoriesUpdate() {
+import { setNotif } from "../../../redux/notif/actions";
+import { getData, putData } from "../../../utils/fetch";
+
+function CategoryCreate() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { categoryId } = useParams();
   const [form, setForm] = useState({
     name: "",
   });
@@ -24,29 +30,60 @@ function CategoriesUpdate() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const fetchOneCategories = async () => {
+    const res = await getData(`/cms/categories/${categoryId}`);
+
+    setForm({ ...form, name: res.data.data.name });
+  };
+
+  useEffect(() => {
+    fetchOneCategories();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleSubmit = async () => {
     setIsLoading(true);
+    const res = await putData(`/cms/categories/${categoryId}`, form);
+    if (res?.data?.data) {
+      dispatch(
+        setNotif(
+          true,
+          "success",
+          `berhasil ubah kategori ${res.data.data.name}`
+        )
+      );
+      navigate("/categories");
+      setIsLoading(false);
+    } else {
+      setIsLoading(false);
+      setAlert({
+        ...alert,
+        status: true,
+        type: "danger",
+        message: res.response.data.msg,
+      });
+    }
   };
 
   return (
-    <>
-      <SNavbar />
-      <Container className="mt-3">
-        <SBreadCrumb
-          textSecond={"Categories"}
-          urlSecond={"/categories"}
-          textThird="Create"
-        />
-        {alert.status && <SAlert type={alert.type} message={alert.message} />}
+    <Container className="mt-5">
+      <SBreadCrumb
+        textSecond={"Categories"}
+        urlSecond={"/categories"}
+        textThird="Update"
+      />
+      {alert.status && <SAlert variant={alert.type} message={alert.message} />}
+      <Card className="p-3" style={{ width: "50%" }}>
         <SForm
-          loading={isLoading}
+          edit
           form={form}
+          isLoading={isLoading}
           handleChange={handleChange}
           handleSubmit={handleSubmit}
         />
-      </Container>
-    </>
+      </Card>
+    </Container>
   );
 }
 
-export default CategoriesUpdate;
+export default CategoryCreate;

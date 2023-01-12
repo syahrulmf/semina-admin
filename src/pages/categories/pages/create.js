@@ -1,16 +1,18 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { Card, Container } from "react-bootstrap";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
 import SAlert from "../../../components/Alert";
 import SBreadCrumb from "../../../components/BreadCrumb";
-import SNavbar from "../../../components/Navbar";
-import { config } from "../../../configs";
 import SForm from "../components/form";
 
-function CategoriesCreate() {
-  const token = localStorage.getItem("access_token");
+import { setNotif } from "../../../redux/notif/actions";
+import { postData } from "../../../utils/fetch";
+
+function CategoryCreate() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [form, setForm] = useState({
     name: "",
   });
@@ -29,53 +31,46 @@ function CategoriesCreate() {
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    try {
-      const res = await axios({
-        method: "POST",
-        url: `${config.api_host_dev}/cms/categories`,
-        data: form,
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (res.status === 201) {
-        navigate("/categories");
-      }
-    } catch (err) {
+    const res = await postData("/cms/categories", form);
+    if (res?.data?.data) {
+      dispatch(
+        setNotif(
+          true,
+          "success",
+          `berhasil tambah kategori ${res.data.data.name}`
+        )
+      );
+      navigate("/categories");
+      setIsLoading(false);
+    } else {
+      setIsLoading(false);
       setAlert({
         ...alert,
         status: true,
-        message: err?.response?.data?.msg || "Internal server error",
         type: "danger",
+        message: res.response.data.msg,
       });
-    } finally {
-      setIsLoading(false);
     }
   };
 
   return (
-    <>
-      <SNavbar />
-      <Container className="mt-5">
-        <SBreadCrumb
-          textSecond={"Categories"}
-          urlSecond={"/categories"}
-          textThird="Create"
+    <Container className="mt-5">
+      <SBreadCrumb
+        textSecond={"Categories"}
+        urlSecond={"/categories"}
+        textThird="Create"
+      />
+      {alert.status && <SAlert variant={alert.type} message={alert.message} />}
+      <Card className="p-3" style={{ width: "50%" }}>
+        <SForm
+          form={form}
+          isLoading={isLoading}
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
         />
-        <Card style={{ width: "50%" }} className="p-3 mt-4">
-          {alert.status && (
-            <SAlert variant={alert.type} message={alert.message} />
-          )}
-          <SForm
-            loading={isLoading}
-            form={form}
-            handleChange={handleChange}
-            handleSubmit={handleSubmit}
-            disabled={isLoading}
-          />
-        </Card>
-      </Container>
-    </>
+      </Card>
+    </Container>
   );
 }
 
-export default CategoriesCreate;
+export default CategoryCreate;

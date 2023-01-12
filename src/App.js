@@ -1,21 +1,13 @@
-import React from "react";
-import { Route, Routes } from "react-router-dom";
-import Categories from "./pages/categories";
-import CategoriesCreate from "./pages/categories/pages/create";
-import CategoriesUpdate from "./pages/categories/pages/update";
-import Dashboard from "./pages/dashboard";
-import Signin from "./pages/signin";
+import React, { useEffect } from "react";
+import { listen } from "./redux/listener";
+import { AppRoutes } from "./routes";
 
 function App() {
-  return (
-    <Routes>
-      <Route path="/" element={<Dashboard />} />
-      <Route path="signin" element={<Signin />} />
-      <Route path="categories" element={<Categories />} />
-      <Route path="categories/create" element={<CategoriesCreate />} />
-      <Route path="categories/update/:id" element={<CategoriesUpdate />} />
-    </Routes>
-  );
+  useEffect(() => {
+    listen();
+  }, []);
+
+  return <AppRoutes />;
 }
 
 export default App;

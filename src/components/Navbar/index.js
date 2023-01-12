@@ -1,29 +1,97 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import SNavLink from "../NavLink";
+import {
+  accessCategories,
+  accessEvents,
+  accessOrders,
+  accessParticipant,
+  accessPayments,
+  accessTalents,
+} from "../../const/access";
+import NavLink from "../NavAccess";
 
 function SNavbar() {
   const navigate = useNavigate();
+  const [role, setRole] = useState(null);
+
+  useEffect(() => {
+    const fetchData = () => {
+      let { role } = localStorage.getItem("auth")
+        ? JSON.parse(localStorage.getItem("auth"))
+        : {};
+
+      setRole(role);
+    };
+    fetchData();
+  }, []);
 
   const handleLogout = () => {
     localStorage.clear();
     window.location.href = "/signin";
   };
+
   return (
     <Navbar bg="dark" variant="dark">
       <Container>
-        <Navbar.Brand href="#home">Semina Admin</Navbar.Brand>
+        <Navbar.Brand href="#home">Dashboard</Navbar.Brand>
         <Nav className="me-auto">
-          <SNavLink action={() => navigate("/")}>Home</SNavLink>
-          <SNavLink action={() => navigate("/categories")}>Categories</SNavLink>
-          <SNavLink action={() => navigate("/talents")}>Talents</SNavLink>
-          <SNavLink action={() => navigate("/payments")}>Payment</SNavLink>
-          <SNavLink action={() => navigate("/events")}>Events</SNavLink>
-          <SNavLink action={() => navigate("/participant")}>
+          <NavLink
+            role={role}
+            roles={accessCategories.lihat}
+            action={() => navigate("/")}
+          >
+            Home
+          </NavLink>
+          <NavLink
+            role={role}
+            roles={accessCategories.lihat}
+            action={() => navigate("/categories")}
+          >
+            Categories
+          </NavLink>
+          <NavLink
+            role={role}
+            roles={accessTalents.lihat}
+            action={() => navigate("/talents")}
+          >
+            Talents
+          </NavLink>
+          <NavLink
+            role={role}
+            roles={accessPayments.lihat}
+            action={() => navigate("/payments")}
+          >
+            Payment
+          </NavLink>
+          {/* <NavLink
+            role={role}
+            roles={organizers.lihat}
+            action={() => navigate('/organizers')}
+          >
+            Oranizer
+          </NavLink> */}
+          <NavLink
+            role={role}
+            roles={accessEvents.lihat}
+            action={() => navigate("/events")}
+          >
+            Events
+          </NavLink>
+          <NavLink
+            role={role}
+            roles={accessParticipant.lihat}
+            action={() => navigate("/participant")}
+          >
             Participant
-          </SNavLink>
-          <SNavLink action={() => navigate("/orders")}>Orders</SNavLink>
+          </NavLink>
+          <NavLink
+            role={role}
+            roles={accessOrders.lihat}
+            action={() => navigate("/orders")}
+          >
+            Orders
+          </NavLink>
         </Nav>
         <Nav className="justify-content-end">
           <Nav.Link onClick={() => handleLogout()}>Logout</Nav.Link>
