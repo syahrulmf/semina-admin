@@ -1,8 +1,9 @@
 import React from "react";
+
 import { Table } from "react-bootstrap";
+import SPagination from "../Pagination";
 import TbodyWithAction from "../TBodyWithAction";
 import THead from "../THead";
-// import Pagination from "../Pagination";
 
 function TableWithAction({
   withoutPagination,
@@ -31,11 +32,11 @@ function TableWithAction({
           customAction={customAction}
         />
       </Table>
-      {/* {!withoutPagination && data.length ? (
-        <Pagination pages={pages} handlePageClick={handlePageClick} />
+      {!withoutPagination && data.length ? (
+        <SPagination pages={pages} handlePageClick={handlePageClick} />
       ) : (
         ""
-      )} */}
+      )}
     </>
   );
 }

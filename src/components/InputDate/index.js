@@ -1,7 +1,7 @@
 import * as React from "react";
 import { DateRange } from "react-date-range";
 
-export default function IndexDate({ date, onChangeDate, setIsShowed }) {
+export default function InputDate({ date, onChangeDate, setIsShowed }) {
   React.useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -21,12 +21,7 @@ export default function IndexDate({ date, onChangeDate, setIsShowed }) {
   };
 
   return (
-    <div
-      className="position-absolute"
-      // style={{ top: '59px' }}
-      style={{ zIndex: "1" }}
-      ref={refDate}
-    >
+    <div className="position-absolute" style={{ zIndex: "99" }} ref={refDate}>
       <DateRange
         editableDateInputs={true}
         onChange={onChangeDate}
