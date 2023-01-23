@@ -157,7 +157,7 @@ function Events() {
           "categoryName",
           "talentName",
         ]}
-        editUrl={`/events/edit`}
+        editUrl={`/events/update`}
         deleteAction={(id) => handleDelete(id)}
         customAction={(id, status = "") => {
           return (

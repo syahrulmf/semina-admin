@@ -37,7 +37,7 @@ export default function EventsForm({
             placeholder={"Masukan judul"}
             label={"Judul"}
             name="title"
-            value={form.title}
+            value={form.title || ""}
             type="text"
             onChange={handleChange}
           />
@@ -47,7 +47,7 @@ export default function EventsForm({
             placeholder={"Masukan tagline"}
             label={"Tagline"}
             name="tagline"
-            value={form.tagline}
+            value={form.tagline || ""}
             type="text"
             onChange={handleChange}
           />
@@ -59,7 +59,7 @@ export default function EventsForm({
             placeholder={"Masukan tanggal acara"}
             label={"Tanggal"}
             name="date"
-            value={form.date}
+            value={form.date || ""}
             type="datetime-local"
             onChange={handleChange}
           />
@@ -69,7 +69,7 @@ export default function EventsForm({
             label={"Category"}
             placeholder={"Masukan kategori"}
             name="category"
-            value={form.category}
+            value={form.category || ""}
             options={lists.categories}
             isClearable={true}
             handleChange={(e) => handleChange(e)}
@@ -82,7 +82,7 @@ export default function EventsForm({
             placeholder={"Masukan about"}
             label={"About"}
             name="about"
-            value={form.about}
+            value={form.about || ""}
             type="text"
             onChange={handleChange}
           />
@@ -92,7 +92,7 @@ export default function EventsForm({
             placeholder={"Masukan tempat acara"}
             label={"Tempat acara"}
             name="venueName"
-            value={form.venueName}
+            value={form.venueName || ""}
             type="text"
             onChange={handleChange}
           />
@@ -102,8 +102,8 @@ export default function EventsForm({
       <Form.Label>Key Point</Form.Label>
       <Row>
         {form.keyPoint.map((key, index) => (
-          <Col sm={6}>
-            <InputGroup className="mb-3" key={index}>
+          <Col sm={6} key={index}>
+            <InputGroup className="mb-3">
               <FormControl
                 placeholder="Masukan keypoint"
                 value={key}
@@ -133,7 +133,7 @@ export default function EventsForm({
             label={"Speaker"}
             placeholder={"Masukan pembica"}
             name="talent"
-            value={form.talent}
+            value={form.talent || ""}
             options={lists.talents}
             isClearable={true}
             handleChange={(e) => handleChange(e)}
@@ -168,13 +168,13 @@ export default function EventsForm({
       <Form.Label>Tiket</Form.Label>
 
       {form.tickets.map((tic, index) => (
-        <Row>
+        <Row key={index}>
           <Col sm={6}>
             <TextInputWithLabel
               placeholder={"Masukan tipe tiket"}
               label={"type"}
               name="type"
-              value={tic.type}
+              value={tic.type || ""}
               type="text"
               onChange={(e) => handleChangeTicket(e, index)}
             />
@@ -184,7 +184,7 @@ export default function EventsForm({
               placeholder={"Masukan Harga"}
               label={"Harga"}
               name="price"
-              value={tic.price}
+              value={tic.price || 0}
               type="number"
               onChange={(e) => handleChangeTicket(e, index)}
             />
@@ -194,7 +194,7 @@ export default function EventsForm({
               placeholder={"Masukan tipe tiket"}
               label={"Stock"}
               name="stock"
-              value={tic.stock}
+              value={tic.stock || 0}
               type="number"
               onChange={(e) => handleChangeTicket(e, index)}
             />
@@ -204,7 +204,7 @@ export default function EventsForm({
               placeholder={"Masukan status"}
               label={"Status"}
               name="status"
-              value={tic.status}
+              value={tic.status || ""}
               type="text"
               onChange={(e) => handleChangeTicket(e, index)}
             />
