@@ -239,11 +239,11 @@ function EventsUpdate() {
   };
 
   return (
-    <Container>
+    <Container className="mt-5">
       <SBreadCrumb
         textSecond={"Events"}
         urlSecond={"/events"}
-        textThird="Create"
+        textThird="Update"
       />
       {alert.status && <Alert type={alert.type} message={alert.message} />}
       <Form
