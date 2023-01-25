@@ -3,7 +3,7 @@ import { Form } from "react-bootstrap";
 import SButton from "../../../components/Button";
 import TextInputWithLabel from "../../../components/TextInputWithLabel";
 
-export default function SForm({ form, handleChange, handleSubmit, isLoading }) {
+export default function SForm({ form, handleChange, handleSubmit, loading }) {
   return (
     <Form>
       <TextInputWithLabel
@@ -25,9 +25,9 @@ export default function SForm({ form, handleChange, handleSubmit, isLoading }) {
       />
 
       <SButton
-        loading={isLoading}
-        disabled={isLoading}
-        color="primary"
+        loading={loading}
+        disabled={loading}
+        variant="primary"
         action={handleSubmit}
       >
         Submit

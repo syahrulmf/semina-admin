@@ -28,21 +28,27 @@ function Signin() {
 
   const handleSubmit = async () => {
     setIsLoading(true);
-    try {
-      const res = await postData("/cms/auth/signin", form);
 
-      if (res.status === 201) {
-        dispatch(userLogin(res.data.data.token, res.data.data.role));
-        navigate("/");
-      }
-    } catch (err) {
+    const res = await postData("/cms/auth/signin", form);
+
+    if (res?.data?.data) {
+      dispatch(
+        userLogin(
+          res.data.data.token,
+          res.data.data.role,
+          res.data.data.refreshToken,
+          res.data.data.email
+        )
+      );
+      setIsLoading(false);
+      navigate("/");
+    } else {
       setAlert({
         ...alert,
         status: true,
-        message: err?.response?.data?.msg || "Internal server error",
+        message: res?.response?.data?.msg || "Internal server error",
         type: "danger",
       });
-    } finally {
       setIsLoading(false);
     }
   };
