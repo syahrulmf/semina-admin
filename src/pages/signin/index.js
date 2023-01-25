@@ -2,10 +2,12 @@ import { useState } from "react";
 import { Card, Container } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
 import SAlert from "../../components/Alert";
+import SForm from "./components/Form";
+
 import { userLogin } from "../../redux/auth/actions";
 import { postData } from "../../utils/fetch";
-import SForm from "./components/Form";
 
 function Signin() {
   const navigate = useNavigate();
